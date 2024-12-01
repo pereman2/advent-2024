@@ -71,7 +71,7 @@ fn day_1_1() {
 fn day_1_2() {
     let mut parser = Parser::new("input1.txt");
     let mut buf = Vec::with_capacity(4096);
-    let mut vv = HashSet::new();
+    let mut vv = HashSet::with_capacity(5000);
     // The biggest number doesn't exceed 100K so we can improve the hashmap to be a linear vector
     let mut ww = vec![0; 100000];
     loop {
