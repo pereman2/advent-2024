@@ -72,7 +72,8 @@ fn day_1_2() {
     let mut parser = Parser::new("input1.txt");
     let mut buf = Vec::with_capacity(4096);
     let mut vv = HashSet::new();
-    let mut ww = HashMap::new();
+    // The biggest number doesn't exceed 100K so we can improve the hashmap to be a linear vector
+    let mut ww = vec![0; 100000];
     loop {
         let (res, line) = parser.next_line(&mut buf);
         if res == 0 {
@@ -83,19 +84,13 @@ fn day_1_2() {
         let a = spaces.next().unwrap().parse::<i64>().unwrap();
         let b = spaces.next().unwrap().parse::<i64>().unwrap();
         vv.insert(a);
-        if !ww.contains_key(&b) {
-            ww.insert(b, 1);
-        } else {
-            let v = ww.get_mut(&b).unwrap();
-            *v += 1;
-        }
+        let v = ww.get_mut(b as usize).unwrap();
+        *v += 1;
     }
 
     let mut res = 0;
     for i in vv {
-        if let Some(v) = ww.get(&i) {
-            res += i * *v;
-        }
+        res += i * ww[i as usize];
     }
     dbg!(res);
 }
