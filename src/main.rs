@@ -76,7 +76,7 @@ fn day_1_1() {
         let a = parser.parse_int();
         parser.advance(3);
         let b = parser.parse_int();
-        parser.advance(3);
+        parser.advance(1);
         vv.push(a);
         ww.push(b);
     }
@@ -104,7 +104,7 @@ fn day_1_2() {
         let a = parser.parse_int();
         parser.advance(3);
         let b = parser.parse_int();
-        parser.advance(3);
+        parser.advance(1);
         vv.insert(a);
         let v = ww.get_mut(b as usize).unwrap();
         *v += 1;
