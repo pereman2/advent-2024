@@ -7,6 +7,9 @@ use std::{
     io::{BufRead, BufReader},
 };
 
+use memmap::Mmap;
+use memmap::MmapOptions;
+
 macro_rules! bench_fns {
     ($(($name:ident, $func_name:ident)),*) => {
         $(
@@ -19,41 +22,61 @@ macro_rules! bench_fns {
 }
 
 struct Parser {
-    file: BufReader<File>,
+    file: File,
+    mmap: Mmap,
+    pos: usize,
 }
 
 impl Parser {
     pub fn new(path: &str) -> Self {
-        Self {
-            file: BufReader::new(File::open(path).unwrap()),
-        }
+        let file = File::open(path).unwrap();
+        let mmap = unsafe { MmapOptions::new().map(&file).unwrap() };
+
+        Self { file, mmap, pos: 0 }
     }
 
-    pub fn next_line<'a>(&mut self, buf: &'a mut Vec<u8>) -> (usize, &'a str) {
-        buf.clear();
-        let res = self.file.read_until('\n' as u8, buf).unwrap();
-        let line = unsafe {
-            let len = if res == 0 { 0 } else { buf.len() - 1 };
-            std::str::from_utf8_unchecked(&buf.as_slice()[0..len])
-        };
-        (res, line)
+    pub fn is_eof(&mut self) -> bool {
+        self.pos >= self.mmap.len()
+    }
+
+    pub fn current(&mut self) -> &[u8] {
+        let buf = self.mmap.as_ref();
+        &buf[self.pos..]
+    }
+
+    pub fn parse_int(&mut self) -> i64 {
+        let buf = self.current();
+        let mut pos = 0;
+        loop {
+            if !buf[pos].is_ascii_digit() {
+                break;
+            }
+            pos += 1;
+        }
+        let str = unsafe { std::str::from_utf8_unchecked(&buf[0..pos]) };
+        let res = str.parse::<i64>().unwrap();
+        self.pos += pos;
+        res
+    }
+
+    pub fn advance(&mut self, amount: usize) {
+        self.pos += amount;
     }
 }
 
 fn day_1_1() {
     let mut parser = Parser::new("input1.txt");
-    let mut buf = Vec::with_capacity(4096);
     let mut vv = Vec::new();
     let mut ww = Vec::new();
     loop {
-        let (res, line) = parser.next_line(&mut buf);
-        if res == 0 {
+        if parser.is_eof() {
             break;
         }
 
-        let mut spaces = line.split(" ");
-        let a = spaces.next().unwrap().parse::<i64>().unwrap();
-        let b = spaces.next().unwrap().parse::<i64>().unwrap();
+        let a = parser.parse_int();
+        parser.advance(3);
+        let b = parser.parse_int();
+        parser.advance(3);
         vv.push(a);
         ww.push(b);
     }
@@ -70,19 +93,18 @@ fn day_1_1() {
 
 fn day_1_2() {
     let mut parser = Parser::new("input1.txt");
-    let mut buf = Vec::with_capacity(4096);
     let mut vv = HashSet::with_capacity(5000);
     // The biggest number doesn't exceed 100K so we can improve the hashmap to be a linear vector
     let mut ww = vec![0; 100000];
     loop {
-        let (res, line) = parser.next_line(&mut buf);
-        if res == 0 {
+        if parser.is_eof() {
             break;
         }
 
-        let mut spaces = line.split(" ");
-        let a = spaces.next().unwrap().parse::<i64>().unwrap();
-        let b = spaces.next().unwrap().parse::<i64>().unwrap();
+        let a = parser.parse_int();
+        parser.advance(3);
+        let b = parser.parse_int();
+        parser.advance(3);
         vv.insert(a);
         let v = ww.get_mut(b as usize).unwrap();
         *v += 1;
@@ -92,6 +114,7 @@ fn day_1_2() {
     for i in vv {
         res += i * ww[i as usize];
     }
+    assert_eq!(res, 21070419);
     dbg!(res);
 }
 
