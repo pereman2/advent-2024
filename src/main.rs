@@ -1,14 +1,14 @@
 #![feature(test)]
 extern crate test;
 
-use std::{
-    collections::{HashMap, HashSet},
-    fs::File,
-    io::{BufRead, BufReader},
-};
+use std::fs::File;
 
+use day1::{day_1_1, day_1_2};
+use day2::{day_2_1, day_2_2};
 use memmap::Mmap;
 use memmap::MmapOptions;
+pub mod day1;
+pub mod day2;
 
 macro_rules! bench_fns {
     ($(($name:ident, $func_name:ident)),*) => {
@@ -21,7 +21,7 @@ macro_rules! bench_fns {
     };
 }
 
-struct Parser {
+pub struct Parser {
     file: File,
     mmap: Mmap,
     pos: usize,
@@ -59,67 +59,32 @@ impl Parser {
         res
     }
 
-    pub fn advance(&mut self, amount: usize) {
+    pub fn advance(&mut self, amount: usize) -> u8 {
+        let buf = self.current();
+        let cur = buf[0];
         self.pos += amount;
+        cur
     }
-}
 
-fn day_1_1() {
-    let mut parser = Parser::new("input1.txt");
-    let mut vv = Vec::new();
-    let mut ww = Vec::new();
-    loop {
-        if parser.is_eof() {
-            break;
+    pub fn jump_after(&mut self, v: u8) {
+        loop {
+            let buf = self.current();
+            if buf[0] == v {
+                self.pos += 1;
+                break;
+            }
+            self.pos += 1;
         }
-
-        let a = parser.parse_int();
-        parser.advance(3);
-        let b = parser.parse_int();
-        parser.advance(1);
-        vv.push(a);
-        ww.push(b);
     }
-
-    vv.sort();
-    ww.sort();
-
-    let mut res = 0;
-    for i in 0..vv.len() {
-        res += vv[i].abs_diff(ww[i]);
-    }
-    dbg!(res);
 }
 
-fn day_1_2() {
-    let mut parser = Parser::new("input1.txt");
-    let mut vv = HashSet::with_capacity(5000);
-    // The biggest number doesn't exceed 100K so we can improve the hashmap to be a linear vector
-    let mut ww = vec![0; 100000];
-    loop {
-        if parser.is_eof() {
-            break;
-        }
-
-        let a = parser.parse_int();
-        parser.advance(3);
-        let b = parser.parse_int();
-        parser.advance(1);
-        vv.insert(a);
-        let v = ww.get_mut(b as usize).unwrap();
-        *v += 1;
-    }
-
-    let mut res = 0;
-    for i in vv {
-        res += i * ww[i as usize];
-    }
-    assert_eq!(res, 21070419);
-    dbg!(res);
-}
-
-bench_fns!((bench_day_1_1, day_1_1), (bench_day_1_2, day_1_2));
+bench_fns!(
+    (bench_day_1_1, day_1_1),
+    (bench_day_1_2, day_1_2),
+    (bench_day_2_1, day_2_1),
+    (bench_day_2_2, day_2_2)
+);
 
 fn main() {
-    day_1_2();
+    day_2_2();
 }
