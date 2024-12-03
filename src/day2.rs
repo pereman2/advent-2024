@@ -136,6 +136,7 @@ pub fn day_2_2() {
 
         let asa = a < b;
         let asb = b < c;
+        // TODO: find valleys and peaks and remove one of them
         if safe_diff(a, b, a < b) && safe_diff(b, c, b < c) && asa == asb {
             for r in 3..values.len() {
                 let mut prev = values[2];
