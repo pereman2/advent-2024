@@ -3,15 +3,17 @@ extern crate test;
 
 use std::fs::File;
 
-use day1::{day_1_1, day_1_2};
-use day2::{day_2_1, day_2_2};
-use day3::day_3_1;
-use day3::day_3_2;
+use day1::*;
+use day2::*;
+use day3::*;
+use day3::*;
+use day4::*;
 use memmap::Mmap;
 use memmap::MmapOptions;
 pub mod day1;
 pub mod day2;
 pub mod day3;
+pub mod day4;
 
 macro_rules! bench_fns {
     ($(($name:ident, $func_name:ident)),*) => {
@@ -28,22 +30,32 @@ pub struct Parser {
     file: File,
     mmap: Mmap,
     pos: usize,
+    len: usize,
+    mmap_buf: &'static [u8],
 }
 
 impl Parser {
     pub fn new(path: &str) -> Self {
         let file = File::open(path).unwrap();
         let mmap = unsafe { MmapOptions::new().map(&file).unwrap() };
+        let len = mmap.len();
+        let mmap_buf = unsafe { std::mem::transmute::<&[u8], &'static [u8]>(mmap.as_ref()) };
 
-        Self { file, mmap, pos: 0 }
+        Self {
+            file,
+            mmap,
+            pos: 0,
+            len,
+            mmap_buf,
+        }
     }
 
     pub fn is_eof(&mut self) -> bool {
-        self.pos >= self.mmap.len()
+        self.pos >= self.len
     }
 
     pub fn current(&mut self) -> &[u8] {
-        let buf = self.mmap.as_ref();
+        let buf = self.mmap_buf;
         &buf[self.pos..]
     }
 
@@ -132,9 +144,11 @@ bench_fns!(
     (bench_day_2_1, day_2_1),
     (bench_day_2_2, day_2_2),
     (bench_day_3_1, day_3_1),
-    (bench_day_3_2, day_3_2)
+    (bench_day_3_2, day_3_2),
+    (bench_day_4_1, day_4_1),
+    (bench_day_4_2, day_4_2)
 );
 
 fn main() {
-    day_3_2();
+    day_4_2();
 }
