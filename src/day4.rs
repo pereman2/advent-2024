@@ -66,7 +66,7 @@ pub fn day_4_1() {
     dbg!(res);
 }
 
-fn in_bounds(a: i64, b: i64, n: usize, m: usize) -> bool {
+pub fn in_bounds(a: i64, b: i64, n: usize, m: usize) -> bool {
     a >= 0 && a < n as i64 && b >= 0 && b < m as i64
 }
 

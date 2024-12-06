@@ -11,8 +11,8 @@ test bench_day_1_2 ... bench:      33,764.48 ns/iter (+/- 1,098.21)
 
 ``` bash
 $ cargo bench day_2
-test bench_day_2_1 ... bench:      33,102.09 ns/iter (+/- 1,538.43)
-test bench_day_2_2 ... bench:      40,991.51 ns/iter (+/- 3,127.01)
+test bench_day_2_1 ... bench:      33,102.09 ns/iter (+/- 1,53843)
+test bench_day_2_2 ... bench:      40,991.51 ns/iter (+/- 3,12701)
 ```
 
 ## Day 3
@@ -21,14 +21,14 @@ test bench_day_2_2 ... bench:      40,991.51 ns/iter (+/- 3,127.01)
 $ cargo bench day_3
 
 test bench_day_3_1 ... bench:      22,290.76 ns/iter (+/- 951.90)
-test bench_day_3_2 ... bench:      23,490.97 ns/iter (+/- 1,007.95)
+test bench_day_3_2 ... bench:      23,490.97 ns/iter (+/- 1,00795)
 ```
 ## Day 4
 
 ```bash
 $ cargo bench day_4
 
-test bench_day_4_1 ... bench:      72,818.84 ns/iter (+/- 96,363.45)
+test bench_day_4_1 ... bench:      72,818.84 ns/iter (+/- 96,36345)
 test bench_day_4_2 ... bench:      52,748.70 ns/iter (+/- 937.38)
 ```
 
@@ -38,6 +38,14 @@ test bench_day_4_2 ... bench:      52,748.70 ns/iter (+/- 937.38)
 ```bash
 $ cargo bench day_5
 
-test bench_day_5_1 ... bench:     320,360.40 ns/iter (+/- 5,858.94)
-test bench_day_5_2 ... bench:   1,013,679.20 ns/iter (+/- 17,519.62)
+test bench_day_5_1 ... bench:     320,360.40 ns/iter (+/- 5,85894)
+test bench_day_5_2 ... bench:   1,013,679.20 ns/iter (+/- 17,51962)
+```
+## Day 6
+
+```bash
+$ cargo bench day_6
+
+test bench_day_6_1 ... bench:      54,389.97 ns/iter (+/- 5,866.49)
+test bench_day_6_2 ... bench: 147,824,745.80 ns/iter (+/- 4,989,134.59)
 ```
