@@ -51,31 +51,9 @@ pub fn day_7_1() {
     dbg!(res);
 }
 
-fn concat(a: i64, b: i64) -> i64 {
-    let mut v = b;
-    let mut v2 = 0;
-    let mut res = a;
-    // println!("{} || {}", res, v);
-    let leading_zero = (v % 10) == 0;
-    while v > 0 {
-        let r = v % 10;
-        v /= 10;
-        v2 *= 10;
-        v2 += r;
-    }
-
-    while v2 > 0 {
-        let r = v2 % 10;
-        v2 /= 10;
-        res *= 10;
-        res += r;
-    }
-    if leading_zero {
-        res *= 10;
-    }
-    // println!("={}", res);
-    // println!("");
-    res
+fn concat(x: i64, y: i64) -> i64 {
+    let m = ((y >= 10) as i64 * 90 + (y >= 100) as i64 * 900 + (y >= 1000) as i64 * 9000) + 10;
+    m * x + y
 }
 
 pub fn calc2(values: &[i64], res: i64, expect: i64) -> i64 {
@@ -138,16 +116,9 @@ pub fn day_7_2() {
     dbg!(res);
 }
 
-enum Op {
-    Mul,
-    Sum,
-    Concat,
-}
-
-pub fn day_7_2_combin() {
+pub fn day_7_2_stack() {
     let mut parser = Parser::new("input7.txt");
     let mut values = Vec::with_capacity(1000);
-    let mut combinations: Vec<Op> = Vec::with_capacity(3.pow(100));
     let mut res = 0;
     loop {
         if parser.is_eof() {
@@ -165,20 +136,25 @@ pub fn day_7_2_combin() {
                 break;
             }
         }
-        // 3 ^ n
-        let a = calc2(&values.as_slice()[2..], values[0] + values[1], value);
-        if a > 0 {
-            res += value;
-        } else {
-            let a = calc2(&values.as_slice()[2..], values[0] * values[1], value);
-            if a > 0 {
+        let mut stack = Vec::with_capacity(10000);
+        stack.push((values[0] + values[1], &values.as_slice()[2..]));
+        stack.push((values[0] * values[1], &values.as_slice()[2..]));
+        stack.push((concat(values[0], values[1]), &values.as_slice()[2..]));
+        while let Some((acc, values)) = stack.pop() {
+            if values.is_empty() && acc == value {
                 res += value;
-            } else {
-                let a = calc2(&values.as_slice()[2..], concat(values[0], values[1]), value);
-                if a > 0 {
-                    res += value;
-                }
+                break;
             }
+            if values.is_empty() {
+                continue;
+            }
+            if acc > value {
+                continue;
+            }
+
+            stack.push((acc + values[0], &values[1..]));
+            stack.push((acc * values[0], &values[1..]));
+            stack.push((concat(acc, values[0]), &values[1..]));
         }
     }
     dbg!(res);

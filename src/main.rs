@@ -159,9 +159,10 @@ bench_fns!(
     (bench_day_6_1, day_6_1),
     (bench_day_6_2, day_6_2),
     (bench_day_7_1, day_7_1),
-    (bench_day_7_2, day_7_2)
+    (bench_day_7_2, day_7_2),
+    (bench_day_7_2_stack, day_7_2_stack)
 );
 
 fn main() {
-    day_7_2();
+    day_7_2_stack();
 }

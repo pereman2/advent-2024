@@ -57,4 +57,6 @@ $ cargo bench day_7
 
 test bench_day_7_1 ... bench:     309,450.53 ns/iter (+/- 35,643.54)
 test bench_day_7_2 ... bench:  13,973,554.20 ns/iter (+/- 474,454.70)
+test bench_day_7_2_stack ... bench:  10,345,854.10 ns/iter (+/- 283,173.4
+0)
 ```
