@@ -60,3 +60,11 @@ test bench_day_7_2 ... bench:  13,973,554.20 ns/iter (+/- 474,454.70)
 test bench_day_7_2_stack ... bench:  10,345,854.10 ns/iter (+/- 283,173.4
 0)
 ```
+## Day 8
+
+```bash
+$ cargo bench day_8
+
+test bench_day_8_1       ... bench:      14,281.66 ns/iter (+/- 503.15)
+test bench_day_8_2       ... bench:      24,071.20 ns/iter (+/- 791.00)
+```

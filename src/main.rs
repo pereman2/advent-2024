@@ -8,6 +8,7 @@ pub mod day4;
 pub mod day5;
 pub mod day6;
 pub mod day7;
+pub mod day8;
 
 use std::fs::File;
 
@@ -19,6 +20,7 @@ use day4::*;
 use day5::*;
 use day6::*;
 use day7::*;
+use day8::*;
 use memmap::Mmap;
 use memmap::MmapOptions;
 
@@ -160,9 +162,11 @@ bench_fns!(
     (bench_day_6_2, day_6_2),
     (bench_day_7_1, day_7_1),
     (bench_day_7_2, day_7_2),
-    (bench_day_7_2_stack, day_7_2_stack)
+    (bench_day_7_2_stack, day_7_2_stack),
+    (bench_day_8_1, day_8_1),
+    (bench_day_8_2, day_8_2)
 );
 
 fn main() {
-    day_7_2_stack();
+    day_8_2();
 }
