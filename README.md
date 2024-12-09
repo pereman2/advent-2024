@@ -68,3 +68,14 @@ $ cargo bench day_8
 test bench_day_8_1       ... bench:      14,281.66 ns/iter (+/- 503.15)
 test bench_day_8_2       ... bench:      24,071.20 ns/iter (+/- 791.00)
 ```
+
+## Day 9
+
+```bash
+$ cargo bench day_9
+
+test bench_day_9_1       ... bench:      65,482.90 ns/iter (+/- 1,949.77)
+test bench_day_9_2       ... bench:   9,038,254.15 ns/iter (+/- 207,407.66)
+
+
+
