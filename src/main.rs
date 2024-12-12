@@ -2,6 +2,9 @@
 extern crate test;
 
 pub mod day1;
+pub mod day10;
+pub mod day11;
+pub mod day12;
 pub mod day2;
 pub mod day3;
 pub mod day4;
@@ -12,8 +15,12 @@ pub mod day8;
 pub mod day9;
 
 use std::fs::File;
+const DXS: [(i64, i64); 4] = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
 use day1::*;
+use day10::*;
+use day11::*;
+use day12::*;
 use day2::*;
 use day3::*;
 use day3::*;
@@ -168,9 +175,11 @@ bench_fns!(
     (bench_day_8_1, day_8_1),
     (bench_day_8_2, day_8_2),
     (bench_day_9_1, day_9_1),
-    (bench_day_9_2, day_9_2)
+    (bench_day_9_2, day_9_2),
+    (bench_day_10_1, day_10_1),
+    (bench_day_10_2, day_10_2)
 );
 
 fn main() {
-    day_9_2();
+    day_12_2();
 }
